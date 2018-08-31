@@ -1,3 +1,9 @@
+<!-----
+Title: recap
+Author: Vincent Steinmann
+Date: 30.08.2018
+Desc.: Site to test our knowledge
+------>
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -10,23 +16,24 @@ $pwd = filter_input(INPUT_POST,"pwd", FILTER_SANITIZE_STRING);
 $pwd2 = filter_input(INPUT_POST,"pwd2", FILTER_SANITIZE_STRING);
 $valide = filter_input(INPUT_POST,"valide");
 
-$co = FALSE;
 $message = "";
-$new = TRUE;
+$new = FALSE;
 
 if($valide)
 {
     if ($pwd === $pwd2)
     {
-        $co = TRUE;
-        $_SESSION['co'] = $co;
+        $new = TRUE;
         $_SESSION['new'] = $new;
+        $_SESSION["prenom"] = $prenom; 
+        $_SESSION["nom"] = $nom; 
+        $_SESSION["id"] = $id; 
+        $_SESSION["pwd"] = $pwd; 
         header("Location:index.php");
     }
     else
     {
       $message = "Les mots de passes ne correspondent pas"; 
-      $_SESSION['msg'] = $message;
     }
 }
 ?>
@@ -34,23 +41,24 @@ if($valide)
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>Login</title>
     </head>
     <body>
         <form method="post" action="signup.php">
             <fieldset>
-                <legend>Inscription</legend>
+                <?php
+                echo '<legend>Inscription</legend>
                 <label>Prénom</label>
                 <br/>
-                <input type="text" name="firstName" required=""/>
+                <input type="text" name="firstName" required="" value="'. $prenom .'"/>
                 <br/>
                 <label>Nom</label>
                 <br/>
-                <input type="text" name="lastName" required=""/>
+                <input type="text" name="lastName" required="" value="'. $nom .'"/>
                 <br/>
                 <label>Identifiant</label>
                 <br/>
-                <input type="text" name="id" required=""/>
+                <input type="text" name="id" required="" value="'. $id .'"/>
                 <br/>
                 <label>Mot de passe:</label>
                 <br/>
@@ -61,8 +69,8 @@ if($valide)
                 <input type="password" name="pwd2" required=""/>
                 <br/>
                 <input type="submit" value="Valider" name="valide">
-            </fieldset>
-            <?php
+            </fieldset>';
+            
             if($message != "")
             {
                 echo $message;
